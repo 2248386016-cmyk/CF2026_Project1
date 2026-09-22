@@ -1,0 +1,2 @@
+﻿input_rows,clean_rows,first_date,last_date,trading_days,distinct_stocks,clean_retention_pct,suspended_records,zero_volume_records,open_at_up_limit,open_at_down_limit,tradable_at_open_records,rows_with_st_dataset_available
+7433025,4565794,2019-10-08,2026-01-30,1536,3352,95.7488,417,0,14712,8298,4542369,4565794

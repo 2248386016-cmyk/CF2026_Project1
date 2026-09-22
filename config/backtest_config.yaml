@@ -1,0 +1,34 @@
+research:
+  start_date: "2020-01-01"
+  end_date: "2025-12-31"
+
+signal:
+  selected_factor_source: selected_factors_table
+  composite_method: equal_zscore
+  require_all_selected_factors: true
+
+portfolio:
+  rebalance_frequency: weekly
+  rebalance_day: first_trading_day_of_period
+  top_n: 20
+  weighting: equal_weight
+  initial_capital: 1000000.0
+  allow_fractional_adjusted_units: true
+
+execution:
+  signal_lag_trading_days: 1
+  block_buy_on_open_limit_up: true
+  block_sell_on_open_limit_down: true
+  block_trade_when_suspended: true
+  block_trade_when_zero_volume: true
+
+cost:
+  buy_rate: 0.0003
+  sell_rate: 0.0013
+  delist_recovery_rate: 0.0
+
+performance:
+  annual_trading_days: 242
+  annual_risk_free_rate: 0.0
+  reconciliation_tolerance: 1.0e-8
+  rolling_windows: [63, 121, 242]

@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-09-22T12:15:50",
+  "python": "3.12.13 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:26:47) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "pandas": "3.0.5",
+    "duckdb": "1.5.5",
+    "pyarrow": "25.0.1",
+    "tushare": "1.4.29",
+    "PyYAML": "6.0.3"
+  },
+  "raw_file_count": 9503,
+  "manifest_sha256": "2f8f8b212baf1f933ab9ea8442b1df4815c68590f5cbfb232f2f0411dfea4c36",
+  "factor_config_sha256": "52aa15b4045364b1e5eb428414e939bf33dfd8ddc422b248fce2763ecf97a969",
+  "backtest_config_sha256": "25eacfb7ca9a16ccef6eb4471ee9ae49cc9e411a7b771ea13c3c14f49574711c"
+}

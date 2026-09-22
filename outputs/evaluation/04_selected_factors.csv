@@ -1,0 +1,4 @@
+﻿selection_order,factor,family,reason
+1,low_volatility_20,risk,研究/验证Rank IC、五分组价差综合排名；逻辑家族=risk
+2,reversal_5,reversal,研究/验证Rank IC、五分组价差综合排名；逻辑家族=reversal
+3,amihud_illiquidity_20,liquidity,研究/验证Rank IC、五分组价差综合排名；逻辑家族=liquidity

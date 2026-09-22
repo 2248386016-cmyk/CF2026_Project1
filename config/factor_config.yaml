@@ -1,0 +1,86 @@
+research:
+  start_date: "2020-01-01"
+  end_date: "2025-12-31"
+  train_end: "2023-12-31"
+  validation_end: "2024-12-31"
+  test_end: "2025-12-31"
+
+factors:
+  - name: momentum_20
+    family: momentum
+    enabled: true
+    window: 20
+    direction: 1
+  - name: reversal_5
+    family: reversal
+    enabled: true
+    window: 5
+    direction: 1
+  - name: low_volatility_20
+    family: risk
+    enabled: true
+    window: 20
+    direction: 1
+  - name: momentum_60_skip_5
+    family: momentum
+    enabled: true
+    window: 60
+    skip: 5
+    direction: 1
+  - name: overnight_reversal_5
+    family: overnight_reversal
+    enabled: true
+    window: 5
+    direction: 1
+  - name: amihud_illiquidity_20
+    family: liquidity
+    enabled: true
+    window: 20
+    direction: 1
+  - name: amount_change_5_20
+    family: volume_price
+    enabled: true
+    short_window: 5
+    long_window: 20
+    direction: 1
+
+preprocess:
+  winsorize:
+    enabled: true
+    lower_quantile: 0.01
+    upper_quantile: 0.99
+  zscore:
+    enabled: true
+  rank:
+    enabled: true
+  neutralize:
+    enabled: false
+
+diagnostics:
+  minimum_daily_assets: 30
+  high_group_quantile: 0.80
+  high_correlation_threshold: 0.70
+
+evaluation:
+  horizons: [1, 5, 20]
+  primary_selection_horizon: 5
+  minimum_cross_section_assets: 30
+  groups: 5
+  entry_delay_days: 1
+  label_definition: "T日收盘形成因子，从T+1收盘持有至T+1+h收盘"
+
+portfolio:
+  groups: 5
+  rebalance: weekly
+  rebalance_day: first_trading_day_of_week
+  top_n: 20
+  weighting: equal_weight
+  initial_capital: 1000000.0
+  annual_trading_days: 242
+  risk_free_rate: 0.0
+  require_all_factors_for_composite: true
+
+cost:
+  buy_rate: 0.0003
+  sell_rate: 0.0013
+  delist_recovery_rate: 0.0

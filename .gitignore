@@ -1,0 +1,34 @@
+# IDE / local environment
+.idea/
+.vscode/
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Data files that are too large or reproducible from scripts
+data/raw/
+data/database/
+data/processed/
+*.duckdb
+*.sqlite
+*.db
+*.parquet
+*.pkl
+
+# LaTeX build artifacts
+report/build/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+
+# Keep final reports and evidence outputs, but ignore bulky raw exports if added later
+outputs/data/
+outputs/raw/
+outputs/processed/

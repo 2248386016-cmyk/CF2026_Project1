@@ -1,0 +1,23 @@
+experiment:
+  name: weekly_vs_monthly
+  question: "仅降低调仓频率，能否在保留三因子策略收益的同时降低换手、成本和回撤？"
+  controlled_variable: rebalance_frequency
+  baseline: weekly
+  treatment: monthly
+
+fixed_conditions:
+  backtest_config: "config/backtest_config.yaml"
+  research_start: "2020-01-01"
+  research_end: "2025-12-31"
+  selected_factor_source: selected_factors_table
+  top_n: 20
+  weighting: equal_weight
+  initial_capital: 1000000.0
+  buy_rate: 0.0003
+  sell_rate: 0.0013
+  delist_recovery_rate: 0.0
+  execution_rules:
+    - no_buy_at_open_limit_up
+    - no_sell_at_open_limit_down
+    - no_trade_when_suspended
+    - no_trade_when_zero_volume

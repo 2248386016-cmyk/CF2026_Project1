@@ -1,0 +1,2 @@
+﻿strategy_count,rebalance_dates,same_asset_selection_mismatch_dates,duplicate_target_keys,future_information_rows,risk_history_after_formation_rows,negative_target_weights,target_exposure_above_one,cap_target_violations,duplicate_daily_keys,nonpositive_nav_rows,date_count_min,date_count_max
+7,71,0,0,0,0,0,0,0,0,0,1455,1455

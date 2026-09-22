@@ -1,0 +1,13 @@
+{
+  "experiment": "weekly_vs_monthly",
+  "started_at": "2026-09-22T12:31:16",
+  "finished_at": "2026-09-22T12:32:56",
+  "runtime_seconds": 99.474,
+  "python_executable": "D:\\Users\\Q\\anaconda3\\envs\\research\\python.exe",
+  "database": "C:\\Users\\Q\\Desktop\\CF2026\\_project1\\data\\database\\cf2026_project1.duckdb",
+  "backtest_config": "C:\\Users\\Q\\Desktop\\CF2026\\_project1\\config\\backtest_config.yaml",
+  "backtest_config_sha256": "25eacfb7ca9a16ccef6eb4471ee9ae49cc9e411a7b771ea13c3c14f49574711c",
+  "experiment_config_sha256": "7a3e234489ba56100ce9f2adfcd2c8b8525774be049cb4b85f9f97e3c9815d03",
+  "data_snapshot_environment": "C:\\Users\\Q\\Desktop\\CF2026\\_project1\\outputs\\data_audit\\06_environment_snapshot.json",
+  "weekly_tables_restored_after_experiment": true
+}

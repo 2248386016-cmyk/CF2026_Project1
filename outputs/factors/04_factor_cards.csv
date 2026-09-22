@@ -1,0 +1,8 @@
+﻿factor,display_name,family,hypothesis,formula,fields,window,direction,missing_rule,failure_risk
+momentum_20,20日动量,动量,中短期强势可能延续,close_adj_t / close_adj_t_minus_20 - 1,close_adj,20个连续交易日,越高越好,历史不足20日或窗口含停牌/ST/无效行情则缺失,趋势快速反转或动量崩溃
+reversal_5,5日反转,反转,短期过度反应可能修复,-(close_adj_t / close_adj_t_minus_5 - 1),close_adj,5个连续交易日,越高越好,历史不足5日或窗口不连续则缺失,强趋势行情
+low_volatility_20,20日低波动,风险,低波动股票可能更稳定,"-std(daily_return, 20)",close_adj,20个连续日收益,越高越好,有效日收益不足20个则缺失,高风险偏好或急涨行情
+momentum_60_skip_5,60日跳过最近5日动量,动量,中期趋势可能延续，跳过近期反转,close_adj_t_minus_5 / close_adj_t_minus_60 - 1,close_adj,60个连续交易日，跳过最近5日,越高越好,60日窗口不完整则缺失,趋势切换或行情反转
+overnight_reversal_5,5日隔夜反转,隔夜反转,近期隔夜涨幅过大可能回调,"-sum(log(open_adj_t / close_adj_t_minus_1), 5)","open_adj, close_adj",5个连续有效隔夜,越高越好,停牌、ST或非连续交易日不跨过计算,持续信息驱动的跳空趋势
+amihud_illiquidity_20,20日Amihud非流动性,流动性,承担非流动性可能需要更高收益补偿,"log(mean(abs(daily_return) / amount, 20))","close_adj, amount",20个连续交易日,越高代表越非流动,收益缺失或成交额非正则缺失,交易成本吞噬溢价或小盘股混杂
+amount_change_5_20,5/20日成交活跃度变化,价量,近期放量可能表示新信息进入市场,"log(mean(amount, 5) / mean(amount, 20))",amount,5日与20日,越高代表近期放量越明显,20日窗口不完整或成交额非正则缺失,投机放量后反转

@@ -1,0 +1,8 @@
+pandas>=2.0
+numpy>=1.26
+scipy>=1.11
+matplotlib>=3.8
+tushare>=1.4
+pyarrow>=14.0
+duckdb>=1.0
+PyYAML>=6.0

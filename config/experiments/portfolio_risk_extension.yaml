@@ -1,0 +1,32 @@
+experiment:
+  name: portfolio_risk_extension
+  research_question: "同一月频三因子信号下，波动率目标、权重限制和风险平价能否改善风险、成本与稳定性？"
+fixed_conditions:
+  research_start: "2020-01-01"
+  research_end: "2025-12-31"
+  rebalance_frequency: monthly
+  signal: multi_equal_3
+  top_n: 20
+  initial_capital: 1000000.0
+  buy_rate: 0.0003
+  sell_rate: 0.0013
+  delist_recovery_rate: 0.0
+risk_model:
+  lookback_trading_days: 60
+  minimum_observations: 40
+  annual_trading_days: 242
+  covariance_shrinkage: 0.20
+  covariance_ridge: 1.0e-8
+  erc_minimum_weight: 0.0001
+  weight_cap: 0.08
+  volatility_targets: [0.10, 0.15, 0.20]
+  leverage_cap: 1.0
+  cash_return: 0.0
+strategies:
+  - monthly_equal
+  - monthly_vol_target_10
+  - monthly_vol_target_15
+  - monthly_vol_target_20
+  - monthly_risk_parity
+  - monthly_risk_parity_cap_08
+  - monthly_risk_parity_cap_08_vol_15

@@ -1,0 +1,17 @@
+﻿table,field,meaning,unit,frequency
+daily_raw,ts_code,Tushare股票代码,无,日频
+daily_raw,trade_date,交易日,YYYY-MM-DD,日频
+daily_raw,open/high/low/close,未复权OHLC价格,元/股,日频
+daily_raw,pre_close,昨日收盘价,元/股,日频
+daily_raw,vol,成交量（Tushare daily口径）,手，1手=100股,日频
+daily_raw,amount,成交额（Tushare daily口径）,千元,日频
+adj_factor,adj_factor,复权因子,无,日频
+daily_adjusted,reference_factor,固定参考日复权因子,无,日频
+daily_adjusted,open_adj/high_adj/low_adj/close_adj,固定参考日的后复权OHLC,元/股等价口径,日频
+stock_basic,list_date/delist_date,上市/退市日期,YYYY-MM-DD,事件
+stock_st_daily,is_st,历史名称区间生成的每日ST标记,布尔,日频
+suspend_daily,suspend_type,停复牌类型，S表示停牌,类别,日频
+stk_limit_daily,up_limit/down_limit,当日涨跌停价,元/股,日频
+research_universe_daily,is_in_universe,当日是否进入沪深主板研究池,布尔,日频
+factor_values_raw,date+asset+factor,因子长表唯一键,无,日频
+backtest_daily,nav/daily_return,扣费后净值和日收益,货币/比率,日频
