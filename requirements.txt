@@ -8,3 +8,4 @@ duckdb>=1.0
 PyYAML>=6.0
 scikit-learn>=1.4
 lightgbm>=4.0
+pyqlib==0.9.7
