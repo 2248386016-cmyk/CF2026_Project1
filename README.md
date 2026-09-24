@@ -142,6 +142,18 @@ scripts/02_download/06_run_download_pipeline.py
 data/database/cf2026_project1.duckdb
 ```
 
+## Ridge + LightGBM 动态沪深300基准
+
+新增的模型基准使用历史沪深300成分股、10 个行业/市值中性化因子和严格的时间序列划分：2020–2022 训练、2023–2024 验证、2025 样本外测试。原始输入按接口缓存，正式结果使用独立 `run_id`，不会替换原有 `strategy_targets` 或 `backtest_daily`。
+
+```powershell
+python scripts/08_experiments/05_download_csi300_model_inputs.py
+python scripts/08_experiments/06_run_ridge_lightgbm_baseline.py
+python scripts/08_experiments/07_validate_ridge_lightgbm_baseline.py
+```
+
+配置见 `config/model_baseline.yaml`，方法、结果文件与当前限制见 `outputs/backtest/ridge_lightgbm_csi300_v1/README.md`。下载脚本只从环境变量读取 `TUSHARE_TOKEN`，不会保存 Token。
+
 ## 清洗数据
 
 可选数据下载完成后，在 PyCharm 中运行：

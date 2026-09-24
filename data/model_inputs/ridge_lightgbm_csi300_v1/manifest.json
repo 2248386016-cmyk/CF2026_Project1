@@ -1,0 +1,22 @@
+[
+  {
+    "file": "csi300_index_weight.parquet",
+    "rows": 21900,
+    "sha256": "ef2f480fded23738c1943ae72273557912968564d7f067745f22432ee9a84dc4"
+  },
+  {
+    "file": "daily_basic_month_end.parquet",
+    "rows": 349232,
+    "sha256": "377e3befce30e9ca8510b73defa7fedd68f90507b5603ee9e7f7921f74c758ac"
+  },
+  {
+    "file": "fina_indicator_history.parquet",
+    "rows": 15099,
+    "sha256": "b69ce365fe51b08ce571ee36f7f614aef711a98aa1bcb68a05e4b1c61b2abfb9"
+  },
+  {
+    "file": "csi300_index_daily.parquet",
+    "rows": 1475,
+    "sha256": "67c6e56f1ec04098448932445d8e2b9092f515f156b686a9a056eff2283c7102"
+  }
+]

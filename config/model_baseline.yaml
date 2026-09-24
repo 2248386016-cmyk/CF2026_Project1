@@ -1,0 +1,35 @@
+run:
+  run_id: ridge_lightgbm_csi300_v1
+  source_database: "C:/Users/Q/Desktop/CF2026/_project1/data/database/cf2026_project1.duckdb"
+  start_date: "2020-01-01"
+  train_end: "2022-12-31"
+  validation_end: "2024-12-31"
+  test_end: "2025-12-31"
+
+universe:
+  index_code: "000300.SH"
+  index_name: "沪深300"
+  history_start: "2019-12-01"
+
+label:
+  horizon_trading_days: 20
+  column: forward_return_20d
+  embargo_trading_days: 20
+
+portfolio:
+  rebalance: monthly
+  top_n: 20
+  weighting: equal_weight
+  initial_capital: 1000000.0
+
+cost:
+  buy_rate: 0.0003
+  sell_rate: 0.0013
+
+model:
+  ridge_alphas: [0.1, 1.0, 10.0, 100.0]
+  lightgbm_candidates:
+    - {num_leaves: 15, learning_rate: 0.03, n_estimators: 200, max_depth: 4}
+    - {num_leaves: 31, learning_rate: 0.03, n_estimators: 300, max_depth: 6}
+    - {num_leaves: 15, learning_rate: 0.05, n_estimators: 150, max_depth: 5}
+  random_state: 2026

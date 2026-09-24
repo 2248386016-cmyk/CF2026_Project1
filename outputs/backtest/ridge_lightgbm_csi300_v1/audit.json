@@ -1,0 +1,20 @@
+{
+  "run_id": "ridge_lightgbm_csi300_v1",
+  "rows": 18609,
+  "dates": 72,
+  "assets": 398,
+  "features": [
+    "momentum_20",
+    "reversal_5",
+    "low_volatility_20",
+    "momentum_60_skip_5",
+    "overnight_reversal_5",
+    "amihud_illiquidity_20",
+    "amount_change_5_20",
+    "earnings_yield",
+    "book_to_price",
+    "quality_roe"
+  ],
+  "negative_financial_lags": 0,
+  "membership_snapshot_after_signal": 0
+}

@@ -6,3 +6,5 @@ tushare>=1.4
 pyarrow>=14.0
 duckdb>=1.0
 PyYAML>=6.0
+scikit-learn>=1.4
+lightgbm>=4.0

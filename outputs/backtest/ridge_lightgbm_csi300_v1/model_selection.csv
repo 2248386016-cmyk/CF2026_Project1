@@ -1,0 +1,8 @@
+model,params,validation_rank_ic
+ridge,"{""alpha"": 0.1}",-0.004194629295987181
+ridge,"{""alpha"": 1.0}",-0.004198891895378853
+ridge,"{""alpha"": 10.0}",-0.004224147366478917
+ridge,"{""alpha"": 100.0}",-0.004442888490856493
+lightgbm,"{""learning_rate"": 0.03, ""max_depth"": 4, ""n_estimators"": 200, ""num_leaves"": 15}",0.04862962482621722
+lightgbm,"{""learning_rate"": 0.03, ""max_depth"": 6, ""n_estimators"": 300, ""num_leaves"": 31}",0.04672429132897397
+lightgbm,"{""learning_rate"": 0.05, ""max_depth"": 5, ""n_estimators"": 150, ""num_leaves"": 15}",0.03432077305150097

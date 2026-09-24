@@ -36,3 +36,6 @@ report/build/
 outputs/data/
 outputs/raw/
 outputs/processed/
+
+# Reproducible model internals; keep compact summaries and checks in Git
+outputs/backtest/*/predictions.csv
