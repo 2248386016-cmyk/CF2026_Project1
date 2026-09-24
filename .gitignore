@@ -10,6 +10,10 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
+# Browser automation profiles are unrelated to the research project and may contain private state
+cnki_browser_profile/
+measure5/
+
 # Data files that are too large or reproducible from scripts
 data/raw/
 data/database/

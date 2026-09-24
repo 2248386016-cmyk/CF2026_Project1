@@ -1,6 +1,6 @@
 """固定月频三因子选股，运行波动率目标、权重上限和ERC风险平价拓展。"""
 from __future__ import annotations
-import hashlib, json, subprocess, sys, time
+import hashlib, json, shutil, subprocess, sys, time
 from datetime import datetime
 from pathlib import Path
 import duckdb
@@ -70,6 +70,10 @@ def main():
     vol_targets = [float(x) for x in risk["volatility_targets"]]
     db = DATABASE_DIR / "cf2026_project1.duckdb"
     started, clock = datetime.now(), time.perf_counter()
+    config_hash = sha256(CONFIG_PATH)
+    run_id = f"portfolio_risk_{started:%Y%m%dT%H%M%S}_{config_hash[:8]}"
+    run_output_dir = BACKTEST_OUTPUT_DIR / "runs" / run_id
+    run_output_dir.mkdir(parents=True, exist_ok=False)
     con = duckdb.connect(str(db))
     try:
         exists = con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name='experiment_monthly_strategy_targets'").fetchone()[0]
@@ -130,12 +134,38 @@ def main():
     try:
         for table in RESULT_TABLES: con.execute(f"CREATE OR REPLACE TABLE extension_risk_{table} AS SELECT * FROM {table}")
         con.execute("CREATE OR REPLACE TABLE extension_risk_target_diagnostics AS SELECT * FROM portfolio_risk_target_diagnostics")
+        con.execute("""
+            CREATE TABLE IF NOT EXISTS research_run_registry (
+                run_id VARCHAR PRIMARY KEY,
+                experiment VARCHAR NOT NULL,
+                started_at TIMESTAMP NOT NULL,
+                config_sha256 VARCHAR NOT NULL,
+                output_directory VARCHAR NOT NULL
+            )
+        """)
+        con.execute(
+            "INSERT INTO research_run_registry VALUES (?, ?, ?, ?, ?)",
+            [run_id, "portfolio_risk_extension", started, config_hash, str(run_output_dir)],
+        )
+        for table in RESULT_TABLES:
+            run_table = f"research_run_{table}"
+            con.execute(
+                f"CREATE TABLE IF NOT EXISTS {run_table} AS "
+                f"SELECT CAST(NULL AS VARCHAR) AS run_id, * FROM {table} WHERE FALSE"
+            )
+            con.execute(f"INSERT INTO {run_table} SELECT ?, * FROM {table}", [run_id])
         for table in RESULT_TABLES: con.execute(f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM experiment_weekly_{table}")
     finally: con.close()
+    # 先冻结本次扩展生成的文件，再恢复基准 CSV，避免实验覆盖正式结果。
+    for artifact in sorted(BACKTEST_OUTPUT_DIR.glob("03_*.csv")):
+        shutil.copy2(artifact, run_output_dir / artifact.name)
+    for script in ["03_analyze_backtest.py", "04_validate_backtest.py"]:
+        subprocess.run([sys.executable, str(BACKTEST_DIR / script)], check=True)
     diagnostics.to_csv(OUTPUT_DIR/"01_target_diagnostics.csv",index=False,encoding="utf-8-sig")
     targets.to_csv(OUTPUT_DIR/"01_target_weights.csv",index=False,encoding="utf-8-sig")
-    runtime=dict(experiment="portfolio_risk_extension",started_at=started.isoformat(timespec="seconds"),finished_at=datetime.now().isoformat(timespec="seconds"),runtime_seconds=round(time.perf_counter()-clock,3),python_executable=sys.executable,database=str(db),config=str(CONFIG_PATH),config_sha256=sha256(CONFIG_PATH),standard_weekly_tables_restored=True)
+    runtime=dict(run_id=run_id,experiment="portfolio_risk_extension",started_at=started.isoformat(timespec="seconds"),finished_at=datetime.now().isoformat(timespec="seconds"),runtime_seconds=round(time.perf_counter()-clock,3),python_executable=sys.executable,database=str(db),config=str(CONFIG_PATH),config_sha256=config_hash,run_output_directory=str(run_output_dir),standard_weekly_tables_restored=True,standard_weekly_csv_restored=True)
     (OUTPUT_DIR/"01_runtime.json").write_text(json.dumps(runtime,ensure_ascii=False,indent=2),encoding="utf-8")
+    (run_output_dir/"run_manifest.json").write_text(json.dumps(runtime,ensure_ascii=False,indent=2),encoding="utf-8")
     print(f"生成策略数：{targets.strategy.nunique()}；调仓日数：{targets.rebalance_date.nunique()}")
     print("[PASS] 风险拓展已运行并冻结，正式周频表已恢复。")
 if __name__=="__main__": main()
