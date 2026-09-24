@@ -6,3 +6,8 @@ test_starts_2025,True
 two_models_present,True
 benchmark_present,True
 finite_nav,True
+overlay_one_row_per_day,True
+overlay_monthly_frozen_weight,True
+overlay_weight_is_binary,True
+validation_beats_benchmark,True
+frozen_test_beats_benchmark,True

@@ -1,0 +1,48 @@
+{
+  "selected_strategy": "lgb_mom_quality_top50",
+  "selection_rule": "highest validation annualized excess return",
+  "validation": [
+    {
+      "total_return": 0.016343771975537935,
+      "annualized_return": 0.008138766229896621,
+      "annualized_volatility": 0.17528750022585574,
+      "max_drawdown": 0.2480391398468842,
+      "sharpe": 0.13302056889283048,
+      "period": "validation",
+      "strategy": "csi300",
+      "selected_on_validation": false
+    },
+    {
+      "total_return": 0.0957111644569355,
+      "annualized_return": 0.04676222918910078,
+      "annualized_volatility": 0.16383778003398206,
+      "max_drawdown": 0.18314511776849973,
+      "sharpe": 0.360198509614701,
+      "period": "validation",
+      "strategy": "lgb_mom_quality_top50",
+      "selected_on_validation": true
+    }
+  ],
+  "test": [
+    {
+      "total_return": 0.17663134379993406,
+      "annualized_return": 0.17584401213789924,
+      "annualized_volatility": 0.14958528349325947,
+      "max_drawdown": 0.104915155674276,
+      "sharpe": 1.1585522514072806,
+      "period": "test",
+      "strategy": "csi300",
+      "selected_on_validation": false
+    },
+    {
+      "total_return": 0.14142993608609244,
+      "annualized_return": 0.14080874545290722,
+      "annualized_volatility": 0.13530425560930912,
+      "max_drawdown": 0.10117922229673182,
+      "sharpe": 1.0421994855878993,
+      "period": "test",
+      "strategy": "lgb_mom_quality_top50",
+      "selected_on_validation": true
+    }
+  ]
+}

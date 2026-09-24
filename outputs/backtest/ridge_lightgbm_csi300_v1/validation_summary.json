@@ -5,5 +5,10 @@
   "test_starts_2025": true,
   "two_models_present": true,
   "benchmark_present": true,
-  "finite_nav": true
+  "finite_nav": true,
+  "overlay_one_row_per_day": true,
+  "overlay_monthly_frozen_weight": true,
+  "overlay_weight_is_binary": true,
+  "validation_beats_benchmark": true,
+  "frozen_test_beats_benchmark": true
 }

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+import argparse
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -18,6 +20,14 @@ if str(PROJECT_ROOT) not in sys.path:
 from project_config import DATABASE_DIR, ensure_data_dirs, print_section
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--targets-table", default="strategy_targets")
+    parser.add_argument("--output-prefix", default="")
+    parser.add_argument("--database", default=str(DATABASE_DIR / "cf2026_project1.duckdb"))
+    return parser.parse_args()
+
+
 def main() -> None:
     print_section("02 运行正式组合回测")
     ensure_data_dirs()
@@ -31,7 +41,12 @@ def main() -> None:
     start_date = config["research"]["start_date"]
     end_date = config["research"]["end_date"]
 
-    connection = duckdb.connect(str(DATABASE_DIR / "cf2026_project1.duckdb"))
+    cli = parse_args()
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", cli.targets_table):
+        raise ValueError("targets-table 不是安全的 SQL 标识符")
+    if not re.fullmatch(r"[A-Za-z0-9_]*", cli.output_prefix):
+        raise ValueError("output-prefix 不是安全的 SQL 标识符前缀")
+    connection = duckdb.connect(cli.database)
     try:
         dates = [row[0] for row in connection.execute(
             """
@@ -41,7 +56,7 @@ def main() -> None:
             """, [start_date, end_date]
         ).fetchall()]
         strategies = [row[0] for row in connection.execute(
-            "SELECT DISTINCT strategy FROM strategy_targets ORDER BY strategy"
+            f"SELECT DISTINCT strategy FROM {cli.targets_table} ORDER BY strategy"
         ).fetchall()]
         delist_dates = {
             row[0]: row[1]
@@ -49,7 +64,7 @@ def main() -> None:
                 "SELECT ts_code, delist_date FROM stock_basic_standardized WHERE delist_date IS NOT NULL"
             ).fetchall()
         }
-        target_rows = connection.execute("SELECT * FROM strategy_targets").fetchdf()
+        target_rows = connection.execute(f"SELECT * FROM {cli.targets_table}").fetchdf()
         targets: dict[tuple[object, str], dict[str, float]] = {}
         for (date, strategy), frame in target_rows.groupby(["rebalance_date", "strategy"]):
             normalized_date = pd.Timestamp(date).date()
@@ -73,7 +88,7 @@ def main() -> None:
                        COALESCE(is_open_at_down_limit, FALSE) AS is_open_at_down_limit
                 FROM market_data_enriched
                 WHERE trade_date = ?
-                  AND exchange IN ('SSE', 'SZSE') AND market = '主板'
+                  AND exchange IN ('SSE', 'SZSE')
                 """,
                 [date],
             ).fetchdf()
@@ -230,9 +245,9 @@ def main() -> None:
         nav_frame["cumulative_transaction_cost"] = nav_frame.groupby("strategy")["transaction_cost"].cumsum()
         nav_frame["cumulative_turnover"] = nav_frame.groupby("strategy")["turnover"].cumsum()
         for name, frame in [
-            ("backtest_daily", nav_frame),
-            ("backtest_trades", trades_frame),
-            ("backtest_positions", positions_frame),
+            (f"{cli.output_prefix}backtest_daily", nav_frame),
+            (f"{cli.output_prefix}backtest_trades", trades_frame),
+            (f"{cli.output_prefix}backtest_positions", positions_frame),
         ]:
             connection.register("temporary_frame", frame)
             connection.execute(f"CREATE OR REPLACE TABLE {name} AS SELECT * FROM temporary_frame")
