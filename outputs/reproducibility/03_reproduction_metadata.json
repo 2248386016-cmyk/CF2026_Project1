@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-09-22T15:56:34",
+  "generated_at": "2026-09-25T22:48:01",
   "python": "3.12.13 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:26:47) [MSC v.1942 64 bit (AMD64)]",
   "platform": "Windows-11-10.0.26200-SP0",
-  "git_commit": null,
-  "git_worktree_dirty": null,
-  "source_file_count": 65,
-  "evidence_file_count": 74,
+  "git_commit": "77c645a5c5329d1d48451fd0773585140fdfb27b",
+  "git_worktree_dirty": false,
+  "git_status_scope": "排除本次生成的outputs/reproducibility、outputs/report与report/figures，仅检查其余项目文件",
+  "source_file_count": 97,
+  "evidence_file_count": 90,
   "large_artifact_count": 2,
   "raw_file_level_manifest": "outputs/data_audit/06_raw_snapshot_manifest_sha256.csv",
   "manifest_scope": "源码/配置/文档逐文件；outputs证据逐文件；数据库与原始数据清单为大文件引用；原始文件逐项哈希见raw_file_level_manifest"
