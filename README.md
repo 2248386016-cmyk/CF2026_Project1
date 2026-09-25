@@ -105,6 +105,21 @@ TUSHARE_TOKEN=你的真实Token
 
 不要把真实 Token 写入代码或提交到 Git。
 
+## 统一入口
+
+根目录 `main.py` 是正式命令行入口。默认从已经冻结的本地数据快照开始，不会重新下载或改变研究样本：
+
+```powershell
+python main.py validate       # 数据接口与基础检查
+python main.py core           # 清洗、资产池、因子、评价和正式回测
+python main.py experiments    # 周/月频对照、风险拓展、模型验证和网页数据
+python main.py report         # 重新生成PDF报告
+python main.py reproduce      # 更新小样本、环境与SHA-256清单
+python main.py all            # 按上述顺序完整重建
+```
+
+数据下载仍使用 `scripts/02_download/06_run_download_pipeline.py` 单独执行，因为下载需要 Tushare Token，并会改变冻结快照。最终封版时应先提交源码和报告，再运行 `python main.py reproduce`，确认元数据中的 Git commit 与当前 `HEAD` 一致。
+
 ## 运行测试
 
 在 PyCharm 中运行：
