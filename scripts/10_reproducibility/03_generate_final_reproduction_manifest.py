@@ -15,6 +15,12 @@ def record(path,category):
     return dict(category=category,relative_path=path.relative_to(PROJECT_ROOT).as_posix(),size_bytes=path.stat().st_size,modified_time=datetime.fromtimestamp(path.stat().st_mtime).isoformat(timespec="seconds"),sha256=digest(path))
 def main():
     OUTPUT_DIR.mkdir(parents=True,exist_ok=True)
+    try:
+        commit=subprocess.run(["git","-C",str(PROJECT_ROOT),"rev-parse","HEAD"],capture_output=True,text=True,check=True).stdout.strip()
+        status=subprocess.run(["git","-C",str(PROJECT_ROOT),"status","--porcelain","--",".",":(exclude)outputs/reproducibility/**",":(exclude)outputs/report/**",":(exclude)report/figures/**"],capture_output=True,text=True,check=True).stdout.strip()
+        dirty=bool(status)
+    except Exception:
+        commit=None; dirty=None
     source=[]
     for path in sorted(PROJECT_ROOT.rglob("*")):
         if not path.is_file() or "__pycache__" in path.parts or ".git" in path.parts: continue
@@ -32,12 +38,7 @@ def main():
     pd.DataFrame(source).to_csv(OUTPUT_DIR/"03_source_code_config_manifest_sha256.csv",index=False,encoding="utf-8-sig")
     pd.DataFrame(evidence).to_csv(OUTPUT_DIR/"03_evidence_outputs_manifest_sha256.csv",index=False,encoding="utf-8-sig")
     pd.DataFrame(large).to_csv(OUTPUT_DIR/"03_large_artifacts_manifest_sha256.csv",index=False,encoding="utf-8-sig")
-    try:
-        commit=subprocess.run(["git","-C",str(PROJECT_ROOT),"rev-parse","HEAD"],capture_output=True,text=True,check=True).stdout.strip()
-        dirty=bool(subprocess.run(["git","-C",str(PROJECT_ROOT),"status","--porcelain"],capture_output=True,text=True,check=True).stdout.strip())
-    except Exception:
-        commit=None; dirty=None
-    metadata=dict(generated_at=datetime.now().isoformat(timespec="seconds"),python=sys.version,platform=platform.platform(),git_commit=commit,git_worktree_dirty=dirty,source_file_count=len(source),evidence_file_count=len(evidence),large_artifact_count=len(large),raw_file_level_manifest="outputs/data_audit/06_raw_snapshot_manifest_sha256.csv",manifest_scope="源码/配置/文档逐文件；outputs证据逐文件；数据库与原始数据清单为大文件引用；原始文件逐项哈希见raw_file_level_manifest")
+    metadata=dict(generated_at=datetime.now().isoformat(timespec="seconds"),python=sys.version,platform=platform.platform(),git_commit=commit,git_worktree_dirty=dirty,git_status_scope="排除本次生成的outputs/reproducibility、outputs/report与report/figures，仅检查其余项目文件",source_file_count=len(source),evidence_file_count=len(evidence),large_artifact_count=len(large),raw_file_level_manifest="outputs/data_audit/06_raw_snapshot_manifest_sha256.csv",manifest_scope="源码/配置/文档逐文件；outputs证据逐文件；数据库与原始数据清单为大文件引用；原始文件逐项哈希见raw_file_level_manifest")
     (OUTPUT_DIR/"03_reproduction_metadata.json").write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(metadata,ensure_ascii=False,indent=2)); print("[PASS] 最终分层复现清单已冻结。")
 if __name__=="__main__": main()

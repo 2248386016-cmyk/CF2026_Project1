@@ -154,6 +154,16 @@ python scripts/08_experiments/07_validate_ridge_lightgbm_baseline.py
 
 配置见 `config/model_baseline.yaml`，方法、结果文件与当前限制见 `outputs/backtest/ridge_lightgbm_csi300_v1/README.md`。下载脚本只从环境变量读取 `TUSHARE_TOKEN`，不会保存 Token。
 
+最终报告采用统一主线：沪深主板三因子实验作为课程基础层，动态沪深300、Ridge/LightGBM、逐日成交和126日相对强弱状态切换作为自主拓展。2025冻结测试中，状态切换策略累计收益25.51%、年化25.40%、最大回撤11.02%、Sharpe 1.545；同期沪深300累计17.66%、年化17.58%。网页、PPT和报告均读取 `outputs/backtest/ridge_lightgbm_csi300_v1/regime_overlay_metrics.csv`，不得手工另算一套数字。
+
+生成最终报告：
+
+```powershell
+python scripts/11_report/02_build_latex_report.py
+```
+
+报告同时写入仓库证据目录和 `C:\CodexWork\CF2026_Deliverables\final\CF2026_Project1_Final_Report.pdf`，最终提交文件不放桌面目录。
+
 ## 清洗数据
 
 可选数据下载完成后，在 PyCharm 中运行：

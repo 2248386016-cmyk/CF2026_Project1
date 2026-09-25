@@ -1,5 +1,6 @@
 """生成图表，以XeLaTeX编译两次，并复制最终研究报告。"""
 from pathlib import Path
+import os
 import shutil,subprocess,sys
 ROOT=Path(__file__).resolve().parents[2]
 REPORT=ROOT/"report"; BUILD=REPORT/"build"; OUTPUT=ROOT/"outputs"/"report"
@@ -12,6 +13,10 @@ def main():
     command=[compiler,"-interaction=nonstopmode","-halt-on-error",f"-output-directory={BUILD}",str(tex)]
     for _ in range(2): subprocess.run(command,cwd=REPORT,check=True)
     source=BUILD/"CF2026_Project1_Report.pdf"; target=OUTPUT/"CF2026_Project1_Report.pdf"
-    shutil.copy2(source,target)
-    print(f"[PASS] 最终研究报告：{target}")
+    deliverable_dir=Path(os.environ.get("CF2026_DELIVERABLE_DIR",r"C:\CodexWork\CF2026_Deliverables\final"))
+    deliverable_dir.mkdir(parents=True,exist_ok=True)
+    external=deliverable_dir/"CF2026_Project1_Final_Report.pdf"
+    shutil.copy2(source,target); shutil.copy2(source,external)
+    print(f"[PASS] 仓库证据报告：{target}")
+    print(f"[PASS] 最终交付报告：{external}")
 if __name__=="__main__": main()

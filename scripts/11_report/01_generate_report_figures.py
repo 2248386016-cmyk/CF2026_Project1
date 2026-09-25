@@ -78,5 +78,28 @@ def cost_extension():
     axes[1].set_xlabel("年化波动率（%）"); axes[1].set_ylabel("年化收益率（%）"); axes[1].set_title("风险拓展：收益—风险位置"); axes[1].grid(alpha=.25)
     save("04_cost_and_extension.png")
 
+def model_extension():
+    daily=pd.read_csv(ROOT/"outputs"/"backtest"/"ridge_lightgbm_csi300_v1"/"regime_overlay_daily.csv",parse_dates=["date"])
+    daily["strategy_nav"]=(1+daily.strategy_return).cumprod()
+    daily["benchmark_nav"]=(1+daily.benchmark_return).cumprod()
+    metrics=pd.read_csv(ROOT/"outputs"/"backtest"/"ridge_lightgbm_csi300_v1"/"regime_overlay_metrics.csv")
+    test=metrics[metrics.period.eq("test")].set_index("strategy")
+    fig,axes=plt.subplots(1,2,figsize=(11,4.2),gridspec_kw={"width_ratios":[1.7,1]})
+    axes[0].plot(daily.date,daily.strategy_nav,label="状态切换策略",color=COLORS["blue"],lw=1.8)
+    axes[0].plot(daily.date,daily.benchmark_nav,label="沪深300",color=COLORS["orange"],lw=1.5)
+    axes[0].axvline(pd.Timestamp("2025-01-01"),color=COLORS["gray"],ls="--",lw=1)
+    axes[0].text(pd.Timestamp("2025-01-10"),axes[0].get_ylim()[0]+.03,"冻结测试期",fontsize=8,color=COLORS["gray"])
+    axes[0].set_title("验证期与2025冻结测试期净值")
+    axes[0].set_ylabel("累计净值"); axes[0].legend(); axes[0].grid(alpha=.25)
+    labels=["累计收益","年化收益","最大回撤","Sharpe"]
+    strategy=[test.loc["regime_overlay","total_return"]*100,test.loc["regime_overlay","annualized_return"]*100,test.loc["regime_overlay","max_drawdown"]*100,test.loc["regime_overlay","sharpe"]]
+    benchmark=[test.loc["csi300","total_return"]*100,test.loc["csi300","annualized_return"]*100,test.loc["csi300","max_drawdown"]*100,test.loc["csi300","sharpe"]]
+    y=np.arange(4); h=.34
+    axes[1].barh(y+h/2,strategy,h,label="策略",color=COLORS["blue"])
+    axes[1].barh(y-h/2,benchmark,h,label="沪深300",color=COLORS["orange"])
+    axes[1].set_yticks(y,labels); axes[1].invert_yaxis(); axes[1].set_title("2025样本外指标")
+    axes[1].legend(fontsize=8); axes[1].grid(axis="x",alpha=.25)
+    save("05_model_extension.png")
+
 if __name__=="__main__":
-    architecture(); factor_diagnostics(); nav_drawdown(); cost_extension(); print("[PASS] 报告图表已生成。")
+    architecture(); factor_diagnostics(); nav_drawdown(); cost_extension(); model_extension(); print("[PASS] 报告图表已生成。")
